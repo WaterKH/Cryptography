@@ -1,0 +1,5 @@
+C:\Users\pjclark\Desktop\Cryptography\CryptographyLibrary\CryptographyLibrary\obj\x86\Debug\CryptographyLibrary.exe
+C:\Users\pjclark\Desktop\Cryptography\CryptographyLibrary\CryptographyLibrary\bin\Debug\CryptographyLibrary.exe
+C:\Users\pjclark\Desktop\Cryptography\CryptographyLibrary\CryptographyLibrary\bin\Debug\CryptographyLibrary.pdb
+C:\Users\pjclark\Desktop\Cryptography\CryptographyLibrary\CryptographyLibrary\obj\x86\Debug\CryptographyLibrary.csprojResolveAssemblyReference.cache
+C:\Users\pjclark\Desktop\Cryptography\CryptographyLibrary\CryptographyLibrary\obj\x86\Debug\CryptographyLibrary.pdb
