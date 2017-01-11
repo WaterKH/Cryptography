@@ -7,16 +7,14 @@ namespace CryptographyLibrary
 	{
 		public static void Main (string[] args)
 		{
-            Vigenere v = new Vigenere();
-            string message = "Hello World";
-            string key = "waterkh";
+            string message = "AZSXS POOJL GDHDW RZRMA ZYIRB RBIRN MLEFZ CYHML DIIX";
 
-            string ct = v.Encrypt(message, key);
-            string pt = v.Decrypt(ct, key);
+            for (int i = 1; i <= 10; ++i)
+            {
+                double ioc = Utilities.CalculateIOC(message, i);
 
-            Console.WriteLine(ct);
-            Console.WriteLine(pt);
-
+                Console.WriteLine(ioc);
+            }
             Console.ReadLine();
         }
 	}

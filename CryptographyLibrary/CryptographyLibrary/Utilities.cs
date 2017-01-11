@@ -8,6 +8,38 @@ namespace CryptographyLibrary
 {
     class Utilities
     {
+        public static Dictionary<string, int> Frequency(string text, char parseBy)
+        {
+            var freq = new Dictionary<string, int>();
+
+            foreach (var l in text.Split(parseBy))
+            {
+                if (!freq.ContainsKey(l))
+                {
+                    freq.Add(l, 0);
+                }
+                ++freq[l];
+            }
+
+            return freq;
+        }
+
+        public static double CalculateIOC_Polygraphic(Dictionary<string, int> freq)
+        {
+            double ioc = 0.0;
+            int totalPolygraphs = 0;
+
+            foreach(KeyValuePair<string, int> kv in freq)
+            {
+                ioc += kv.Value * (kv.Value - 1);
+                totalPolygraphs += kv.Value;
+            }
+            Console.WriteLine(totalPolygraphs);
+            ioc /= totalPolygraphs * (totalPolygraphs - 1);
+
+            return ioc;
+        }
+
         public static double CalculateIOC(string text, int keyLength)
         {
             text = RemoveSpecialCharacters(text).ToLower();
