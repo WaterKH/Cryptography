@@ -7,7 +7,12 @@ using System.Threading.Tasks;
 namespace CryptographyLibrary
 {
     class Utilities
-    {
+	{
+		public static string RemoveRepLetters(string text)
+		{
+			return new string (text.ToCharArray ().Distinct ().ToArray ());
+		}
+
         public static Dictionary<string, int> Frequency(string text, char parseBy)
         {
             var freq = new Dictionary<string, int>();
