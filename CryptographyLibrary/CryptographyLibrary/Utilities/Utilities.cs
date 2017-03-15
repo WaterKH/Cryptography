@@ -8,6 +8,18 @@ namespace CryptographyLibrary
 {
     class Utilities
 	{
+		public static void PrintDoubleArray<T>(IEnumerable<T>[][] arr)
+		{
+			foreach(var outer in arr)
+			{
+				foreach(var inner in outer)
+				{
+					Console.Write (inner + " ");
+				}
+				Console.WriteLine ();
+			}
+		}
+
 		public static string RemoveRepLetters(string text)
 		{
 			return new string (text.ToCharArray ().Distinct ().ToArray ());

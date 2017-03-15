@@ -52,6 +52,8 @@
     <Compile Include="Utilities\ContactLetters.cs" />
     <Compile Include="Utilities\ScoringFunctions.cs" />
     <Compile Include="Utilities\Utilities.cs" />
+    <Compile Include="CryptanalysisProjects\ADFGX\Cryptanalysis.cs" />
+    <Compile Include="Utilities\LetterFrequency.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CryptanalysisProjects\.DS_Store" />

@@ -11,6 +11,44 @@ namespace CryptographyLibrary
         public Dictionary<string, Dictionary<string, int>> before = new Dictionary<string, Dictionary<string, int>>();
         public Dictionary<string, Dictionary<string, int>> after = new Dictionary<string, Dictionary<string, int>>();
 
+		public ContactLetters ()
+		{
+			
+		}
+
+		public ContactLetters(string message)
+		{
+			this.FindContactLetters (message);
+		}
+
+		public void FindContactLetters(string text)
+		{
+			for (int i = 0; i < text.Length; ++i)
+			{
+				string currLetter = text.Substring (i, 1);
+				string prevLetter, nextLetter;
+
+				if((i - 1) < 0)
+				{
+					prevLetter = "-";
+					nextLetter = text.Substring (i + 1, 1);
+				} 
+				else if((i + 1) == text.Length)
+				{
+					prevLetter = text.Substring (i - 1, 1);
+					nextLetter = "-";
+				} 
+				else
+				{
+					prevLetter = text.Substring (i - 1, 1);
+					nextLetter = text.Substring (i + 1, 1);
+				}
+
+				this.setAfter (currLetter, nextLetter);
+				this.setBefore (currLetter, prevLetter);
+			}
+		}
+
         public Dictionary<string, int> getBefore(string letter)
         {
             if(before.ContainsKey(letter))
@@ -66,5 +104,32 @@ namespace CryptographyLibrary
                 after.Add(outer_letter, t);
             }
         }
+
+		public void PrintContactLetters()
+		{
+			Console.WriteLine ();
+			Console.WriteLine ("BEFORE CONTACT LETTERS");
+			Console.WriteLine ();
+
+			foreach (var outer_key in before)
+			{
+				foreach(var inner_key in outer_key.Value)
+				{
+					Console.WriteLine ("CURR LETTER: " + outer_key.Key + "\tPREV LETTER: " + inner_key.Key + "\tCOUNT: " + inner_key.Value); 
+				}
+			}
+
+			Console.WriteLine ();
+			Console.WriteLine ("AFTER CONTACT LETTERS");
+			Console.WriteLine ();
+
+			foreach (var outer_key in after)
+			{
+				foreach (var inner_key in outer_key.Value) 
+				{
+					Console.WriteLine ("CURR LETTER: " + outer_key.Key + "\tNEXT LETTER: " + inner_key.Key + "\tCOUNT: " + inner_key.Value);
+				}
+			}
+		}
     }
 }

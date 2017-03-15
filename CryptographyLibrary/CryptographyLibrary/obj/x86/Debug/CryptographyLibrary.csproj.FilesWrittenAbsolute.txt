@@ -1,0 +1,5 @@
+/Volumes/Jacob Clark/Cryptography/CryptographyLibrary/CryptographyLibrary/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/Volumes/Jacob Clark/Cryptography/CryptographyLibrary/CryptographyLibrary/bin/Debug/CryptographyLibrary.exe.mdb
+/Volumes/Jacob Clark/Cryptography/CryptographyLibrary/CryptographyLibrary/bin/Debug/CryptographyLibrary.exe
+/Volumes/Jacob Clark/Cryptography/CryptographyLibrary/CryptographyLibrary/obj/x86/Debug/CryptographyLibrary.exe
+/Volumes/Jacob Clark/Cryptography/CryptographyLibrary/CryptographyLibrary/obj/x86/Debug/CryptographyLibrary.exe.mdb
