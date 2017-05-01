@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CryptographyLibrary
 {
-    class Utilities
+    static class Utilities
 	{
 		public static void PrintDoubleArray<T>(IEnumerable<T>[][] arr)
 		{
@@ -39,6 +39,18 @@ namespace CryptographyLibrary
             }
 
             return freq;
+        }
+
+        public static bool ContainsSpecialCharacters(string word)
+        {
+            foreach (char c in word)
+            {
+                if (!(c >= 'A' && c <= 'Z') && !(c >= 'a' && c <= 'z'))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static double CalculateIOC_Polygraphic(Dictionary<string, int> freq)
@@ -116,6 +128,75 @@ namespace CryptographyLibrary
                 }
             }
             return sb.ToString();
+        }
+
+        public static IEnumerable<List<T>> GetPermutations<T>(this List<T> items, bool repeating = false)
+        {
+            foreach (var i in GetPermutations(items, new List<T>(), 0, repeating))
+            {
+                yield return i;
+            }
+        }
+        public static IEnumerable<List<T>> GetPermutations<T>(this List<T> items, int limit, bool repeating = false)
+        {
+            foreach (var i in GetPermutations(items, new List<T>(), limit, repeating))
+            {
+                yield return i;
+            }
+        }
+
+        //OXIN STUFF
+        private static IEnumerable<List<T>> GetPermutations<T>(this List<T> items, List<T> currentItems, int limit, bool repeating = false)
+        {
+            if (items.Count() == 0 || (limit > 0 && currentItems.Count == limit))
+            {
+                yield return currentItems;
+            }
+            else
+            {
+                if (repeating)
+                {
+                    foreach (var item in items)
+                    {
+                        currentItems.Add(item);
+                        foreach (var i in GetPermutations(items, currentItems, limit, repeating))
+                        {
+                            yield return i;
+                        }
+                        currentItems.RemoveAt(currentItems.Count - 1);
+                    }
+                }
+                else
+                {
+                    var availableItems = items.ToList();
+                    foreach (var item in availableItems)
+                    {
+                        currentItems.Add(item);
+                        items.Remove(item);
+                        foreach (var i in GetPermutations(items, currentItems, limit, repeating))
+                        {
+                            yield return i;
+                        }
+                        items.Add(item);
+                        currentItems.RemoveAt(currentItems.Count - 1);
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<T[]> GetPermutations<T>(this T[] items, bool repeating = false)
+        {
+            foreach (var i in GetPermutations(items.ToList(), new List<T>(), 0, repeating))
+            {
+                yield return i.ToArray();
+            }
+        }
+        public static IEnumerable<T[]> GetPermutations<T>(this T[] items, int limit, bool repeating = false)
+        {
+            foreach (var i in GetPermutations(items.ToList(), new List<T>(), limit, repeating))
+            {
+                yield return i.ToArray();
+            }
         }
     }
 }

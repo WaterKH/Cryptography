@@ -33,6 +33,8 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CipherImplementations\ADFGX_Text.cs" />
+    <Compile Include="CipherImplementations\SimpleAES.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CipherImplementations\ADFGX.cs" />
