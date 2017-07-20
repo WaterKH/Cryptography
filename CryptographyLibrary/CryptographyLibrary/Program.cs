@@ -14,8 +14,34 @@ namespace CryptographyLibrary
 
         public static void Main (string[] args)
 		{
-            var key = new List<int> { 1, 2, 3, 4 };
-            var ct = "XDGDGDFDXFXDXAAAGGAFXXFDXFGXGD FDGFFAFGXFXXAGDAGXAFDAFDGDGDGAGGDADA FAFADAFFGAGDADXAGADAXAGXDDGAGAGAFFAGDX AGAGGDFDGGDDGAAFXGXDFAFDGDAXAADAFFAXGD";
+            string message = "Hello, how are you doing?";
+            string key     = "0001001100110100010101110111100110011011101111001101111111110001";
+            DES des = new DES();
+
+            string binMes = "";
+            foreach (var c in message)
+            {
+                binMes += Convert.ToString(c, 2).PadLeft(8, '0');
+            }
+
+            int leftOver = 64 - (binMes.Length % 64);
+
+            for(int i = 0; i < leftOver; ++i)
+            {
+                binMes += "0";
+            }
+
+            var encryptedMessage = "";
+
+            for(int i = 0; i < binMes.Length; i += 64)
+            {
+                var temp = binMes.Substring(i, 64);
+                encryptedMessage += des.Encrypt(temp, key);
+            }
+
+            Console.WriteLine(encryptedMessage);
+            /*var key = new List<int> { 1, 2, 3, 4, 5 };
+            var ct = "XDGDGDFDXFXDXAAAGGAFXXFDXFGXGDFDGFFAFGXFXXAGDAGXAFDAFDGDGDGAGGDADAFAFADAFFGAGDADXAGADAXAGXDDGAGAGAFFAGDXAGAGGDFDGGDDGAAFXGXDFAFDGDAXAADAFFAXGD";
 
             var l = Utilities.GetPermutations(key);
 
@@ -28,7 +54,7 @@ namespace CryptographyLibrary
                 Console.WriteLine(adfgx.DecryptMessage(ct));
 
                 Console.WriteLine();
-            }
+            }*/
             Console.WriteLine("Finished");
             Console.ReadLine();
         }
