@@ -247,13 +247,66 @@ namespace CryptographyLibrary
         }
 
         /// <summary>
-        /// Not yet implemented
+        /// Similar to DES Encryption, however the keys are inversed.
         /// </summary>
         /// <returns></returns>
-        public string Decrypt()
+        public string Decrypt(string message, string key)
         {
             string decryptedString = "";
+            
+            /* PART ONE - Key Generation */
+            // Permutae K (key) according to the PC-1 table (Converts 64bits to 56bits)
+            // Split key into left/ right halves, C0 and D0 (each 28bits)
+            // Create sixteen blocks Cn and Dn, 1<=n<=16, using the Iter_LeftShift Dictionary and Cn-1 and Dn-1
+            // Form Kn, 1<=n<=16, by using PC-2 to permute the concatenated pairs CnDn (56bits to 48bits)
+            var Kn = SubKeys(key);
 
+            /* PART TWO */
+            // Use IP_Matrix to permute the message M to a variable IP (64bits to 64bits)
+            // Split IP into left/ right halves, L0 and R0 (each 32bits)
+            // Proceed through 16 iterations using the function_f on two blocks, a data block of 32 bits
+            //    and a key Kn of 48 bits, to produce a block of 32 bits
+            //    for n, 1<=n<=16, where + is XOR:
+            //        Ln = R_n-1_
+            //        Rn = L_n-1_ + f(R_n-1_, Kn)
+            // At the end, we will have L16 and R16, reverse the order and concat: R16L16
+            // Finally, apply the Inv_IP_Matrix to obtain the ciphertext
+            int[] IP = new int[message.Length];
+            for (int i = 0; i < IP_Matrix.Length; ++i)
+            {
+                IP[i] = int.Parse(message[IP_Matrix[i] - 1].ToString());
+            }
+
+            var L0 = IP.Take(IP.Length / 2).ToArray();
+            var R0 = IP.Skip(IP.Length / 2).ToArray();
+
+            int[][] Ln = new int[17][];
+            int[][] Rn = new int[17][];
+            Ln[0] = L0;
+            Rn[0] = R0;
+
+            int counter = 15;
+
+            for (int i = 1; i <= 16; ++i)
+            {
+                Ln[i] = Rn[i - 1];
+                Rn[i] = XOR(Ln[i - 1], function_f(Rn[i - 1], Kn[counter]));
+
+                --counter;
+            }
+
+            var RL = new int[64];
+
+            Rn[16].CopyTo(RL, 0);
+            Ln[16].CopyTo(RL, Rn[15].Length);
+
+            int[] Inv_IP = new int[64];
+            for (int i = 0; i < Inv_IP_Matrix.Length; ++i)
+            {
+                Inv_IP[i] = RL[Inv_IP_Matrix[i] - 1];
+            }
+
+            Inv_IP.ToList().ForEach(x => decryptedString += x);
 
             return decryptedString;
         }

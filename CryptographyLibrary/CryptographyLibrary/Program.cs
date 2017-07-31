@@ -40,6 +40,17 @@ namespace CryptographyLibrary
             }
 
             Console.WriteLine(encryptedMessage);
+
+            var decryptedMessage = "";
+
+            for(int i = 0; i < encryptedMessage.Length; i += 64)
+            {
+                var temp = encryptedMessage.Substring(i, 64);
+                decryptedMessage += des.Decrypt(temp, key);
+            }
+
+            Console.WriteLine(decryptedMessage);
+
             /*var key = new List<int> { 1, 2, 3, 4, 5 };
             var ct = "XDGDGDFDXFXDXAAAGGAFXXFDXFGXGDFDGFFAFGXFXXAGDAGXAFDAFDGDGDGAGGDADAFAFADAFFGAGDADXAGADAXAGXDDGAGAGAFFAGDXAGAGGDFDGGDDGAAFXGXDFAFDGDAXAADAFFAXGD";
 
