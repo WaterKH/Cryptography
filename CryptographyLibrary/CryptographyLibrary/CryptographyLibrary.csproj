@@ -33,9 +33,11 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base64.cs" />
     <Compile Include="CipherImplementations\ADFGX_Text.cs" />
     <Compile Include="CipherImplementations\SimpleAES.cs" />
     <Compile Include="CipherImplementations\DES.cs" />
+    <Compile Include="Conversion.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CipherImplementations\ADFGX.cs" />
