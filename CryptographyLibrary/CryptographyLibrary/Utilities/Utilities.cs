@@ -145,6 +145,26 @@ namespace CryptographyLibrary
             }
         }
 
+        public static string ConvertToAlphaCharacters(string word)
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            Dictionary<char, char> holder = new Dictionary<char, char>();
+            int index = 0;
+            string alphaChars = "";
+
+            foreach (char c in word)
+            {
+                if(!holder.ContainsKey(c))
+                {
+                    holder.Add(c, alphabet[index]);
+                    ++index;
+                }
+                alphaChars += holder[c];
+            }
+
+            return alphaChars;
+        }
+
         //OXIN STUFF
         private static IEnumerable<List<T>> GetPermutations<T>(this List<T> items, List<T> currentItems, int limit, bool repeating = false)
         {

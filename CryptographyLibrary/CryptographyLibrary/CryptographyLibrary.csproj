@@ -38,6 +38,7 @@
     <Compile Include="CipherImplementations\SimpleAES.cs" />
     <Compile Include="CipherImplementations\DES.cs" />
     <Compile Include="Conversion.cs" />
+    <Compile Include="DictionarySearch.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CipherImplementations\ADFGX.cs" />

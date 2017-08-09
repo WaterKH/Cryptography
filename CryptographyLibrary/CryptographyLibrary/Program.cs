@@ -14,6 +14,14 @@ namespace CryptographyLibrary
 
         public static void Main (string[] args)
 		{
+            DictionarySearch ds = new DictionarySearch();
+            //ds.Prune();
+            //ds.Search();
+            string adfgx = "IUNOLSOGTNZNSSMSSMNTMAOOWPPOWXNTLL".ToLower();
+            ds.FillInCipherText(adfgx, "Test.txt");
+
+            Console.ReadLine();
+
             string encryptMes = "kCmIgFi6GUJNgkNI1Q41fbfyLoCFTCvIqkZiI0KIAXAzP1U1uy1BE4UfPBfpKmmL0bjYnQNRBaPtKiVWzc5A4v0w3xIe8F0hAGJZ7g4in0wndJxM0v03dc1M82at2T6935roTqyWDgtGD/hwwRF3oHqFM5Vcw1JtINbsgWRm4o4/quEDkZ7x1B275bX3/Fo1";
             string key = "TheGiant";
             DES des = new DES();
