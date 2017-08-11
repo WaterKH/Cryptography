@@ -13,119 +13,119 @@ namespace CryptographyLibrary
         {
             string adfgx = "IUNOLSOGTNZNSSMSSMNTMAOOWPPOWXNTLL".ToLower();
             string word;
-            StreamWriter writer = new StreamWriter("Test.txt");
 
-            using (StreamReader reader = new StreamReader("dictionary_pruned.txt"))
+            using (StreamWriter writer = new StreamWriter("Test.txt"))
             {
-                while ((word = reader.ReadLine()) != null)
+                using (StreamReader reader = new StreamReader("dictionary_pruned.txt"))
                 {
-                    // End of ciphertext
-                    if (word.Length < 8 && word.Length > 2 && word[word.Length - 1] == word[word.Length - 2])
+                    while ((word = reader.ReadLine()) != null)
                     {
-                        int length = (adfgx.Length - 1) - (word.Length - 1);
-                        string temp = adfgx.Substring(length);
-
-                        string alpha_word = Utilities.ConvertToAlphaCharacters(word);
-                        string alpha_temp = Utilities.ConvertToAlphaCharacters(temp);
-
-                        if(alpha_word == alpha_temp)
+                        // End of ciphertext
+                        if (word.Length < 8 && word.Length > 2 && word[word.Length - 1] == word[word.Length - 2])
                         {
-                            writer.WriteLine(word);
+                            int length = (adfgx.Length - 1) - (word.Length - 1);
+                            string temp = adfgx.Substring(length);
+
+                            string alpha_word = Utilities.ConvertToAlphaCharacters(word);
+                            string alpha_temp = Utilities.ConvertToAlphaCharacters(temp);
+
+                            if (alpha_word == alpha_temp)
+                            {
+                                writer.WriteLine(word);
+                            }
                         }
                     }
                 }
-                reader.Close();
             }
-            writer.Close();
         }
 
         public void Search(string pattern)
         {
             string adfgx = "IUNOLSOGTNZNSSMSSMNTMAOOWPPOWXNTLL".ToLower();
             string word;
-            StreamWriter writer = new StreamWriter("Test.txt");
 
-            using (StreamReader reader = new StreamReader("dictionary_pruned.txt"))
-            {
-                while ((word = reader.ReadLine()) != null)
+            using (StreamWriter writer = new StreamWriter("Test.txt"))
+            { 
+                using (StreamReader reader = new StreamReader("dictionary_pruned.txt"))
                 {
-                    // End of ciphertext
-                    if (word.Length < 8 && word.Length > 2 && word[word.Length - 1] == word[word.Length - 2])
+                    while ((word = reader.ReadLine()) != null)
                     {
-                        int length = (adfgx.Length - 1) - (word.Length - 1);
-                        string temp = adfgx.Substring(length);
-
-                        string alpha_word = Utilities.ConvertToAlphaCharacters(word);
-                        string alpha_temp = Utilities.ConvertToAlphaCharacters(temp);
-
-                        if (alpha_word == alpha_temp)
+                        // End of ciphertext
+                        if (word.Length < 8 && word.Length > 2 && word[word.Length - 1] == word[word.Length - 2])
                         {
-                            writer.WriteLine(word);
+                            int length = (adfgx.Length - 1) - (word.Length - 1);
+                            string temp = adfgx.Substring(length);
+
+                            string alpha_word = Utilities.ConvertToAlphaCharacters(word);
+                            string alpha_temp = Utilities.ConvertToAlphaCharacters(temp);
+
+                            if (alpha_word == alpha_temp)
+                            {
+                                writer.WriteLine(word);
+                            }
                         }
                     }
                 }
-                reader.Close();
             }
-            writer.Close();
         }
 
         public void Prune()
         {
             string word;
-            StreamWriter writer = new StreamWriter("dictionary_pruned.txt");
-            using (StreamReader reader = new StreamReader("dictionary.txt"))
+            using (StreamWriter writer = new StreamWriter("dictionary_pruned.txt"))
             {
-                while ((word = reader.ReadLine()) != null)
+                using (StreamReader reader = new StreamReader("dictionary.txt"))
                 {
-                    if (!Utilities.ContainsSpecialCharacters(word))
+                    while ((word = reader.ReadLine()) != null)
                     {
-                        writer.WriteLine(word);
+                        if (!Utilities.ContainsSpecialCharacters(word))
+                        {
+                            writer.WriteLine(word);
+                        }
                     }
                 }
-                reader.Close();
             }
-            writer.Close();
         }
 
         public void FillInCipherText(string cipher, string dictionary)
         {
             string word = "";
-            StreamWriter writer = new StreamWriter("PartialSolutions.txt");
-            using (StreamReader reader = new StreamReader(dictionary))
+            using (StreamWriter writer = new StreamWriter("PartialSolutions.txt"))
             {
-                while ((word = reader.ReadLine()) != null)
+                using (StreamReader reader = new StreamReader(dictionary))
                 {
-                    string pt_partial = "";
-                    // End of cipher
-                    int length = (cipher.Length - 1) - (word.Length - 1);
-                    string temp = cipher.Substring(length);
-                    Dictionary<char, char> holder = new Dictionary<char, char>();
-
-                    for (int i = 0; i < temp.Length; ++i)
+                    while ((word = reader.ReadLine()) != null)
                     {
-                        if (!holder.ContainsKey(temp[i]))
-                        {
-                            holder.Add(temp[i], word[i]);
-                        }
-                    }
+                        string pt_partial = "";
+                        // End of cipher
+                        int length = (cipher.Length - 1) - (word.Length - 1);
+                        string temp = cipher.Substring(length);
+                        Dictionary<char, char> holder = new Dictionary<char, char>();
 
-                    foreach(char c in cipher)
-                    {
-                        if(holder.ContainsKey(c))
+                        for (int i = 0; i < temp.Length; ++i)
                         {
-                            pt_partial += holder[c].ToString().ToUpper();
+                            if (!holder.ContainsKey(temp[i]))
+                            {
+                                holder.Add(temp[i], word[i]);
+                            }
                         }
-                        else
-                        {
-                            pt_partial += c.ToString().ToLower();
-                        }
-                    }
-                    writer.WriteLine(pt_partial);
 
+                        foreach (char c in cipher)
+                        {
+                            if (holder.ContainsKey(c))
+                            {
+                                pt_partial += holder[c].ToString().ToUpper();
+                            }
+                            else
+                            {
+                                pt_partial += c.ToString().ToLower();
+                            }
+                        }
+                        writer.WriteLine(pt_partial);
+
+                    }
                 }
-                reader.Close();
             }
-            writer.Close();
         }
     }
 }

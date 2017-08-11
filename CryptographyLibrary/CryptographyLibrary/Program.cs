@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
 using ADFGX;
+using CryptographyLibrary.CipherIdeas.ADFGX;
 
 namespace CryptographyLibrary
 {
@@ -14,10 +15,25 @@ namespace CryptographyLibrary
 
         public static void Main (string[] args)
 		{
+            MiddleBruteForce mbf = new MiddleBruteForce();
+            string adfgx = "IUNOLSOGTNZNSSMSSMNTMAOOWPPOWXNTLL".ToLower();
+            //mbf.AllPossibilities("patterns.txt", "nssmssmn");
+            string partialSolution = "";
+            using (StreamReader reader = new StreamReader("PartialSolutions.txt"))
+            {
+                int i = 0;
+                while ((partialSolution = reader.ReadLine()) != null)
+                {
+                    mbf.FillInCipherText(adfgx, partialSolution, "patterns.txt", "SoManyTextFiles/Line" + i + ".txt");
+                    ++i;
+                }
+                
+            }
+            Console.Read();
             DictionarySearch ds = new DictionarySearch();
             //ds.Prune();
             //ds.Search();
-            string adfgx = "IUNOLSOGTNZNSSMSSMNTMAOOWPPOWXNTLL".ToLower();
+            
             ds.FillInCipherText(adfgx, "Test.txt");
 
             Console.ReadLine();

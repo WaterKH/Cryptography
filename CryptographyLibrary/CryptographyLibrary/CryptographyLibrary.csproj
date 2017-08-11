@@ -34,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base64.cs" />
+    <Compile Include="CipherIdeas\ADFGX\MiddleBruteForce.cs" />
     <Compile Include="CipherImplementations\ADFGX_Text.cs" />
     <Compile Include="CipherImplementations\SimpleAES.cs" />
     <Compile Include="CipherImplementations\DES.cs" />
