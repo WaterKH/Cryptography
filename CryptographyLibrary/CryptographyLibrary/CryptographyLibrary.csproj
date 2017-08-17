@@ -36,8 +36,10 @@
     <Compile Include="Base64.cs" />
     <Compile Include="CipherIdeas\ADFGX\MiddleBruteForce.cs" />
     <Compile Include="CipherImplementations\ADFGX_Text.cs" />
+    <Compile Include="CipherImplementations\DoubleTransposition.cs" />
     <Compile Include="CipherImplementations\SimpleAES.cs" />
     <Compile Include="CipherImplementations\DES.cs" />
+    <Compile Include="CipherImplementations\Transposition.cs" />
     <Compile Include="Conversion.cs" />
     <Compile Include="DictionarySearch.cs" />
     <Compile Include="Program.cs" />

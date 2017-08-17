@@ -6,6 +6,7 @@ using System.Text;
 using System.Security.Cryptography;
 using ADFGX;
 using CryptographyLibrary.CipherIdeas.ADFGX;
+using CryptographyLibrary.CipherImplementations;
 
 namespace CryptographyLibrary
 {
@@ -15,10 +16,22 @@ namespace CryptographyLibrary
 
         public static void Main (string[] args)
 		{
+            string d = "In cryptography, Twofish is a symmetric key block cipher with a block size of 128 bits and key sizes up to 256 bits. It was one of the five finalists of the Advanced Encryption Standard contest, but it was not selected for standardization. Twofish is related to the earlier block cipher Blowfish.";
+            DoubleTransposition t = new DoubleTransposition();
+            var tmp = t.Encrypt(d, "40312");
+            
+            Console.WriteLine(tmp);
+            var emp = t.Decrypt(tmp, "40312");
+            Console.WriteLine(emp);
+
+            Console.Read();
             MiddleBruteForce mbf = new MiddleBruteForce();
             string adfgx = "IUNOLSOGTNZNSSMSSMNTMAOOWPPOWXNTLL".ToLower();
             //mbf.AllPossibilities("patterns.txt", "nssmssmn");
-            string partialSolution = "";
+            //mbf.ConstrainDictionary();
+            mbf.AllPatterns();
+
+            /*string partialSolution = "";
             using (StreamReader reader = new StreamReader("PartialSolutions.txt"))
             {
                 int i = 0;
@@ -28,15 +41,13 @@ namespace CryptographyLibrary
                     ++i;
                 }
                 
-            }
-            Console.Read();
+            }*/
             DictionarySearch ds = new DictionarySearch();
             //ds.Prune();
             //ds.Search();
             
-            ds.FillInCipherText(adfgx, "Test.txt");
-
-            Console.ReadLine();
+            //ds.FillInCipherText(adfgx, "Test.txt");
+            
 
             string encryptMes = "kCmIgFi6GUJNgkNI1Q41fbfyLoCFTCvIqkZiI0KIAXAzP1U1uy1BE4UfPBfpKmmL0bjYnQNRBaPtKiVWzc5A4v0w3xIe8F0hAGJZ7g4in0wndJxM0v03dc1M82at2T6935roTqyWDgtGD/hwwRF3oHqFM5Vcw1JtINbsgWRm4o4/quEDkZ7x1B275bX3/Fo1";
             string key = "TheGiant";

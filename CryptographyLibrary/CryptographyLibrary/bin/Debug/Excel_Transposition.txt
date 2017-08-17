@@ -1,0 +1,43 @@
+In cryp
+tograph
+y, Twof
+ish is 
+a symme
+tric ke
+y block
+ cipher
+ with a
+ block 
+size of
+ 128 bi
+ts and 
+key siz
+es up t
+o 256 b
+its. It
+ was on
+e of th
+e five 
+finalis
+ts of t
+he Adva
+nced En
+cryptio
+n Stand
+ard con
+test, b
+ut it w
+as not 
+selecte
+d for s
+tandard
+ization
+. Twofi
+sh is r
+elated 
+to the 
+earlier
+ block 
+cipher 
+Blowfis
+h.

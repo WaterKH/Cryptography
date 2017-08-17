@@ -46,13 +46,59 @@ namespace CryptographyLibrary.CipherIdeas.ADFGX
                             {
                                 writeTo += holder[ct];
                             }
-                            writer.WriteLine(writeTo);
+                            if(writeTo.Contains('a') || writeTo.Contains('e') || writeTo.Contains('i') || writeTo.Contains('o') || writeTo.Contains('u'))
+                                writer.WriteLine(writeTo);
                         }
                     }
                 }
             }
             time.Stop();
-            Console.WriteLine(time.Interval);
+            Console.WriteLine(time);
+        }
+
+        public void ConstrainDictionary(int length = 7)
+        {
+            string word = "";
+
+            using (StreamWriter writer = new StreamWriter("dictionary_7letter.txt"))
+            using (StreamReader reader = new StreamReader("dictionary_pruned.txt"))
+            {
+                while((word = reader.ReadLine()) != null)
+                {
+                    if(word.Length <= 7)
+                    {
+                        writer.WriteLine(word);
+                    }
+                }
+            }
+        }
+
+        public void AllPatterns(int index = 0)
+        {
+            string word = "";
+
+            using (StreamWriter writer = new StreamWriter("AllPossibleWords_index" + index + ".txt"))
+            using (StreamReader reader = new StreamReader("dictionary_7letter.txt"))
+            {
+                while((word = reader.ReadLine()) != null)
+                {
+                    string sub_word = "";
+
+
+                    
+                    using (StreamReader sub_reader = new StreamReader("patterns.txt"))
+                    {
+                        while((sub_word = sub_reader.ReadLine()) != null)
+                        {
+                            if(sub_word.Contains(word))
+                            {
+                                writer.WriteLine(word);
+                            }
+                        }
+                    }
+                }
+                Console.WriteLine("Finished");
+            }
         }
 
         public void FillInCipherText(string cipher, string partialSolution, string patterns, string writeTo)
@@ -102,12 +148,21 @@ namespace CryptographyLibrary.CipherIdeas.ADFGX
                                 sub_holder.Add(temp[i], pattern[i]);
                             }
                         }
+                        
 
                         foreach (char c in cipher)
                         {
                             if(holder.ContainsKey(c) && sub_holder.ContainsKey(c))
                             {
                                 if (char.ToLower(holder[c]) != sub_holder[c])
+                                {
+                                    nonmatch = true;
+                                    break;
+                                }
+                            }
+                            else if(holder.ContainsKey(c))
+                            {
+                                if(sub_holder.ContainsValue(char.ToLower(holder[c])))
                                 {
                                     nonmatch = true;
                                     break;
