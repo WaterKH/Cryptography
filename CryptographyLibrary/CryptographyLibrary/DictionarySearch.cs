@@ -26,8 +26,8 @@ namespace CryptographyLibrary
                             int length = (adfgx.Length - 1) - (word.Length - 1);
                             string temp = adfgx.Substring(length);
 
-                            string alpha_word = Utilities.ConvertToAlphaCharacters(word);
-                            string alpha_temp = Utilities.ConvertToAlphaCharacters(temp);
+                            string alpha_word = WaterkhUtilities.ConvertToAlphaCharacters(word);
+                            string alpha_temp = WaterkhUtilities.ConvertToAlphaCharacters(temp);
 
                             if (alpha_word == alpha_temp)
                             {
@@ -56,8 +56,8 @@ namespace CryptographyLibrary
                             int length = (adfgx.Length - 1) - (word.Length - 1);
                             string temp = adfgx.Substring(length);
 
-                            string alpha_word = Utilities.ConvertToAlphaCharacters(word);
-                            string alpha_temp = Utilities.ConvertToAlphaCharacters(temp);
+                            string alpha_word = WaterkhUtilities.ConvertToAlphaCharacters(word);
+                            string alpha_temp = WaterkhUtilities.ConvertToAlphaCharacters(temp);
 
                             if (alpha_word == alpha_temp)
                             {
@@ -78,7 +78,7 @@ namespace CryptographyLibrary
                 {
                     while ((word = reader.ReadLine()) != null)
                     {
-                        if (!Utilities.ContainsSpecialCharacters(word))
+                        if (!WaterkhUtilities.ContainsSpecialCharacters(word))
                         {
                             writer.WriteLine(word);
                         }

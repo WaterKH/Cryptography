@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using ADFGX;
 using CryptographyLibrary.CipherIdeas.ADFGX;
 using CryptographyLibrary.CipherImplementations;
+using CryptographyLibrary.Utilities;
 
 namespace CryptographyLibrary
 {
@@ -16,21 +17,44 @@ namespace CryptographyLibrary
 
         public static void Main (string[] args)
 		{
-            string d = "In cryptography, Twofish is a symmetric key block cipher with a block size of 128 bits and key sizes up to 256 bits. It was one of the five finalists of the Advanced Encryption Standard contest, but it was not selected for standardization. Twofish is related to the earlier block cipher Blowfish.";
-            DoubleTransposition t = new DoubleTransposition();
-            var tmp = t.Encrypt(d, "40312");
-            
-            Console.WriteLine(tmp);
-            var emp = t.Decrypt(tmp, "40312");
-            Console.WriteLine(emp);
+            string adfgx_WSIPAC = "IUNOLSOGTNZNSSMSSMNTMAOOWPPOWXNTLL";
+            BruteForceAttempt bfa = new BruteForceAttempt();
+            bfa.VowelMask_Attempt(adfgx_WSIPAC);
 
+                MiddleBruteForce mbf = new MiddleBruteForce();
+            string adfgx = "IXSODNOIINXXSNRSNRNSRASOWXPOKXNSQL".ToLower();
+            //mbf.AllPossibilities("All3Letters.txt");
+            mbf.FillInCiphertext("All3Letters.txt", adfgx);
             Console.Read();
-            MiddleBruteForce mbf = new MiddleBruteForce();
-            string adfgx = "IUNOLSOGTNZNSSMSSMNTMAOOWPPOWXNTLL".ToLower();
-            //mbf.AllPossibilities("patterns.txt", "nssmssmn");
-            //mbf.ConstrainDictionary();
-            mbf.AllPatterns();
 
+            using (StreamReader reader = new StreamReader("sentence_tests.txt"))
+            {
+                string test = "";
+                while ((test = reader.ReadLine()) != null)
+                {
+                    // TODO Test for frequencies
+                    var dict = LetterFrequency.ProduceFrequencies(test.Substring(0, 34));
+                    
+                    foreach(var kv in dict)
+                    {
+                        Console.WriteLine(kv.Key + " " + kv.Value);
+                    }
+
+                    Console.Read();
+                }
+                Console.ReadLine();
+            }
+            string ct = "IXSODNOIINXXSNRSNRNSRASOWXPOKXNSQL";
+            string alphabet = "NSXOIRDAWPKQL";
+            string freqs    = "TEAIONSRHDLUC"; 
+            
+            // NSXOIRDAWPKQL=ETAIONSRHDLUC
+
+            MonoSubstitution ms = new MonoSubstitution();
+
+            var s = ms.Decrypt(ct, alphabet, freqs);
+            Console.WriteLine(s);
+            
             /*string partialSolution = "";
             using (StreamReader reader = new StreamReader("PartialSolutions.txt"))
             {
@@ -174,7 +198,7 @@ namespace CryptographyLibrary
             {
                 var word = newDict[i];
 
-                if (Utilities.ContainsSpecialCharacters(word)) continue;
+                if (WaterkhUtilities.ContainsSpecialCharacters(word)) continue;
                 
                 var index = ciphertext.Length - word.Length;
                 var tempDict = new Dictionary<char, char>();

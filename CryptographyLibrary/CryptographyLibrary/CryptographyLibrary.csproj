@@ -34,9 +34,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base64.cs" />
+    <Compile Include="CipherIdeas\ADFGX\BruteForceAttempt.cs" />
     <Compile Include="CipherIdeas\ADFGX\MiddleBruteForce.cs" />
     <Compile Include="CipherImplementations\ADFGX_Text.cs" />
     <Compile Include="CipherImplementations\DoubleTransposition.cs" />
+    <Compile Include="CipherImplementations\MonoSubstitution.cs" />
     <Compile Include="CipherImplementations\SimpleAES.cs" />
     <Compile Include="CipherImplementations\DES.cs" />
     <Compile Include="CipherImplementations\Transposition.cs" />
@@ -58,9 +60,11 @@
     <Compile Include="CryptanalysisProjects\ADFGX\HillClimbingSolution.cs" />
     <Compile Include="CustomCiphers\GroupCipher.cs" />
     <Compile Include="Utilities\BookUtilities.cs" />
+    <Compile Include="Utilities\BruteForceUtils.cs" />
     <Compile Include="Utilities\ContactLetters.cs" />
+    <Compile Include="Utilities\Ngrams.cs" />
     <Compile Include="Utilities\ScoringFunctions.cs" />
-    <Compile Include="Utilities\Utilities.cs" />
+    <Compile Include="Utilities\WaterkhUtilities.cs" />
     <Compile Include="CryptanalysisProjects\ADFGX\Cryptanalysis.cs" />
     <Compile Include="Utilities\LetterFrequency.cs" />
   </ItemGroup>

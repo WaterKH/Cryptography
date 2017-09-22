@@ -11,49 +11,54 @@ namespace CryptographyLibrary.CipherIdeas.ADFGX
     class MiddleBruteForce
     {
         string alphabet = "abcdefghiklmnopqrstuvwxyz";
+        string consonants = "bcdfghklmnpqrstvwxz";
+        string vowels = "aeiouy";
 
-        public void AllPossibilities(string fileName, string pattern)
+        public void AllPossibilities(string fileName)
         {
-            Timer time = new Timer();
-            string pattern_holder = pattern.PadLeft(pattern.Length, '-');
-
-            time.Start();
             using (StreamWriter writer = new StreamWriter(fileName))
             {
-                foreach (var a in alphabet)
+                foreach (var a in consonants)
+                foreach (var b in vowels)
+                foreach(var c in vowels)
                 {
-                    Dictionary<char, char> holder = new Dictionary<char, char>();
-                    holder.Add(pattern[0], a);
-                    foreach (var b in alphabet)
-                    {
-                        if (b == a) continue;
-                        if(holder.ContainsKey(pattern[1]))
-                        {
-                            holder.Remove(pattern[1]);
-                        }
-                        holder.Add(pattern[1], b);
-                        foreach(var c in alphabet)
-                        {
-                            if (c == a || c == b) continue;
-                            if (holder.ContainsKey(pattern[3]))
-                            {
-                                holder.Remove(pattern[3]);
-                            }
-                            holder.Add(pattern[3], c);
+                    if (c == b) continue;
 
-                            string writeTo = "";
-                            foreach(char ct in pattern)
-                            {
-                                writeTo += holder[ct];
-                            }
-                            if(writeTo.Contains('a') || writeTo.Contains('e') || writeTo.Contains('i') || writeTo.Contains('o') || writeTo.Contains('u'))
-                                writer.WriteLine(writeTo);
+                    string writeTo = a.ToString() + b.ToString() + c.ToString();
+                    writer.WriteLine(writeTo);
+                }
+                
+            }
+        }
+
+        public void FillInCiphertext(string fileName, string ciphertext)
+        {
+            using(StreamWriter writer = new StreamWriter("Test.txt"))
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                string line = "";
+                while ((line = reader.ReadLine()) != null)
+                {
+                    var dict = new Dictionary<char, char>()
+                    {
+                        { 's', line[0] }, { 'n', line[1] }, { 'r', line[2] }
+                    };
+
+                    string pt = "";
+                    foreach(var c in ciphertext)
+                    {
+                        if(dict.ContainsKey(c))
+                        {
+                            pt += dict[c];
+                        }
+                        else
+                        {
+                            pt += "-";
                         }
                     }
+                    writer.WriteLine(pt);
                 }
             }
-            time.Stop();
-            Console.WriteLine(time);
         }
 
         public void ConstrainDictionary(int length = 7)

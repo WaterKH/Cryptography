@@ -15,7 +15,7 @@ namespace CryptographyLibrary
             string book = File.ReadAllText(fileName);
             int textSize = 34;
 
-            book = Utilities.RemoveSpecialCharacters(book).ToLower();
+            book = WaterkhUtilities.RemoveSpecialCharacters(book).ToLower();
 
             for(int i = 0; i < book.Length - textSize; ++i)
             {

@@ -21,7 +21,7 @@ namespace CryptographyLibrary
                     int cipherIndex = 0;
                     var incomplete = false;
 
-                    if (word.Length == i && !Utilities.ContainsSpecialCharacters(word))
+                    if (word.Length == i && !WaterkhUtilities.ContainsSpecialCharacters(word))
                     {
                         foreach(var c in word)
                         {

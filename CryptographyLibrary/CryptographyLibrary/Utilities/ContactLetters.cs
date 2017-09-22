@@ -20,6 +20,7 @@ namespace CryptographyLibrary
 		{
 			this.FindContactLetters (message);
 		}
+        
 
 		public void FindContactLetters(string text)
 		{

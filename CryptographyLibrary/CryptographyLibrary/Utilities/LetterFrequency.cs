@@ -6,7 +6,7 @@ namespace CryptographyLibrary
 {
 	public class LetterFrequency
 	{
-		public Dictionary<string, int> ProduceFrequencies (string cipherFileName, string sep = " ")
+		public static Dictionary<string, int> ProduceFrequencies (string cipherFileName, string sep = " ")
 		{
             string formattedCipher = "";
             using (StreamReader reader = new StreamReader(cipherFileName))
@@ -43,5 +43,24 @@ namespace CryptographyLibrary
 
             return freqs;
 		}
-	}
+
+        public static Dictionary<char, int> ProduceFrequencies(string cipher)
+        {
+            string formattedCipher = "";
+            formattedCipher += cipher.Replace(" ", "");
+            
+            var freqs = new Dictionary<char, int>();
+            for (int i = 0; i < formattedCipher.Length; ++i)
+            {
+                if (!freqs.ContainsKey(formattedCipher[i]))
+                {
+                    freqs.Add(formattedCipher[i], 0);
+                }
+
+                ++freqs[formattedCipher[i]];
+            }
+
+            return freqs;
+        }
+    }
 }

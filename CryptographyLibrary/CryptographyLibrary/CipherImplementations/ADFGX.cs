@@ -168,7 +168,7 @@ namespace CryptographyLibrary
 			}
 
 			Console.WriteLine ("Test");
-			Utilities.PrintDoubleArray (unformattedText);
+			WaterkhUtilities.PrintDoubleArray (unformattedText);
 
 			return unformattedText;
 		}
