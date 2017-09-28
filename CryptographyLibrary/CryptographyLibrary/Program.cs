@@ -17,6 +17,10 @@ namespace CryptographyLibrary
 
         public static void Main (string[] args)
 		{
+            var cl = new ContactLetters("brown.txt");
+            cl.PrintToFile("brown_analysis.txt");
+            Console.Read();
+
             string adfgx_WSIPAC = "IUNOLSOGTNZNSSMSSMNTMAOOWPPOWXNTLL";
             BruteForceAttempt bfa = new BruteForceAttempt();
             bfa.VowelMask_Attempt(adfgx_WSIPAC);

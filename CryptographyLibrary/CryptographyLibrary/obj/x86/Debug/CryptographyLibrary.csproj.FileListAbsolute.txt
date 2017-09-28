@@ -13,3 +13,9 @@ C:\Users\pjclark\Documents\GitHub\Cryptography\CryptographyLibrary\CryptographyL
 C:\Users\pjclark\Documents\GitHub\Cryptography\CryptographyLibrary\CryptographyLibrary\obj\x86\Debug\CryptographyLibrary.csprojResolveAssemblyReference.cache
 C:\Users\pjclark\Documents\GitHub\Cryptography\CryptographyLibrary\CryptographyLibrary\obj\x86\Debug\CryptographyLibrary.exe
 C:\Users\pjclark\Documents\GitHub\Cryptography\CryptographyLibrary\CryptographyLibrary\obj\x86\Debug\CryptographyLibrary.pdb
+C:\Users\edfound\Desktop\Cryptography\Cryptography\CryptographyLibrary\CryptographyLibrary\bin\Debug\CryptographyLibrary.exe
+C:\Users\edfound\Desktop\Cryptography\Cryptography\CryptographyLibrary\CryptographyLibrary\bin\Debug\CryptographyLibrary.pdb
+C:\Users\edfound\Desktop\Cryptography\Cryptography\CryptographyLibrary\CryptographyLibrary\obj\x86\Debug\CryptographyLibrary.csprojResolveAssemblyReference.cache
+C:\Users\edfound\Desktop\Cryptography\Cryptography\CryptographyLibrary\CryptographyLibrary\obj\x86\Debug\CryptographyLibrary.csproj.CoreCompileInputs.cache
+C:\Users\edfound\Desktop\Cryptography\Cryptography\CryptographyLibrary\CryptographyLibrary\obj\x86\Debug\CryptographyLibrary.exe
+C:\Users\edfound\Desktop\Cryptography\Cryptography\CryptographyLibrary\CryptographyLibrary\obj\x86\Debug\CryptographyLibrary.pdb

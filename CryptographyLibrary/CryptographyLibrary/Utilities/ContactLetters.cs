@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace CryptographyLibrary
     {
         public Dictionary<string, Dictionary<string, int>> before = new Dictionary<string, Dictionary<string, int>>();
         public Dictionary<string, Dictionary<string, int>> after = new Dictionary<string, Dictionary<string, int>>();
+        public string alphabet = "abcdefghiklmnopqrstuvwxyz ";
+
 
 		public ContactLetters ()
 		{
@@ -20,35 +23,124 @@ namespace CryptographyLibrary
 		{
 			this.FindContactLetters (message);
 		}
-        
 
-		public void FindContactLetters(string text)
+        public void FindContactLetters(string file)
+        {
+            string prevLetter, nextLetter, currLetter = "";
+
+            using (StreamReader reader = new StreamReader(file))
+            {
+                string line = "";
+                while ((line = reader.ReadLine()) != null)
+                {
+                    var sb = new StringBuilder(line.ToLower());
+                    
+                    for (int i = 0; i < sb.Length; ++i)
+                    {
+                        if(sb.Length < 2)
+                        {
+                            break;
+                        }
+
+                        currLetter = sb[i].ToString();// line.Substring(i, 1);
+
+                        if ((i - 1) < 0)
+                        {
+                            prevLetter = " ";
+                            nextLetter = sb[i + 1].ToString();// line.Substring(i + 1, 1);
+                        }
+                        else if ((i + 1) == sb.Length)
+                        {
+                            prevLetter = sb[i - 1].ToString();// line.Substring(i - 1, 1);
+                            nextLetter = " ";
+                        }
+                        else
+                        {
+                            prevLetter = sb[i - 1].ToString();// line.Substring(i - 1, 1);
+                            nextLetter = sb[i + 1].ToString();// line.Substring(i + 1, 1);
+                        }
+
+                        if (!alphabet.Contains(currLetter))
+                        {
+                            sb.Remove(i, 1);
+                            --i;
+                            continue;
+                        }
+                        else if (!alphabet.Contains(prevLetter))
+                        {
+                            sb.Remove(i - 1, 1);
+                            --i;
+                            continue;
+                        }
+                        else if (!alphabet.Contains(nextLetter))
+                        {
+                            sb.Remove(i + 1, 1);
+                            --i;
+                            continue;
+                        }
+
+                        this.setAfter(currLetter, nextLetter);
+                        this.setBefore(currLetter, prevLetter);
+                    }
+                }
+            }
+        }
+
+        /*public void FindContactLetters(string line, string alphabet = "abcdefghijklmnopqrstuvwxyz ")
 		{
-			for (int i = 0; i < text.Length; ++i)
-			{
-				string currLetter = text.Substring (i, 1);
-				string prevLetter, nextLetter;
+            string prevLetter, nextLetter, currLetter = "";
+            var sb = new StringBuilder(line.ToLower());
 
-				if((i - 1) < 0)
-				{
-					prevLetter = "-";
-					nextLetter = text.Substring (i + 1, 1);
-				} 
-				else if((i + 1) == text.Length)
-				{
-					prevLetter = text.Substring (i - 1, 1);
-					nextLetter = "-";
-				} 
-				else
-				{
-					prevLetter = text.Substring (i - 1, 1);
-					nextLetter = text.Substring (i + 1, 1);
-				}
+            for (int i = 0; i < sb.Length; ++i)
+            {
+                currLetter = sb[i].ToString();// line.Substring(i, 1);
+                if (!alphabet.Contains(currLetter))
+                {
+                    sb.Remove(i, 1);
+                    --i;
+                    continue;
+                }
 
-				this.setAfter (currLetter, nextLetter);
-				this.setBefore (currLetter, prevLetter);
-			}
-		}
+                if ((i - 1) < 0)
+                {
+                    prevLetter = " ";
+                    nextLetter = sb[i + 1].ToString();// line.Substring(i + 1, 1);
+                }
+                else if ((i + 1) == sb.Length)
+                {
+                    prevLetter = sb[i - 1].ToString();// line.Substring(i - 1, 1);
+                    nextLetter = " ";
+                }
+                else
+                {
+                    prevLetter = sb[i - 1].ToString();// line.Substring(i - 1, 1);
+                    nextLetter = sb[i + 1].ToString();// line.Substring(i + 1, 1);
+                }
+
+                if (!alphabet.Contains(currLetter))
+                {
+                    sb.Remove(i, 1);
+                    --i;
+                    continue;
+                }
+                else if (!alphabet.Contains(prevLetter))
+                {
+                    sb.Remove(i - 1, 1);
+                    --i;
+                    continue;
+                }
+                else if (!alphabet.Contains(nextLetter))
+                {
+                    sb.Remove(i + 1, 1);
+                    --i;
+                    continue;
+                }
+
+
+                this.setAfter(currLetter, nextLetter);
+                this.setBefore(currLetter, prevLetter);
+            }
+        }*/
 
         public Dictionary<string, int> getBefore(string letter)
         {
@@ -106,31 +198,69 @@ namespace CryptographyLibrary
             }
         }
 
+        public void PrintToFile(string file)
+        {
+            using (StreamWriter writer = new StreamWriter(file))
+            {
+                writer.WriteLine();
+                writer.WriteLine("BEFORE CONTACT LETTERS");
+                writer.WriteLine();
+
+                foreach (var outer_key in before)
+                {
+                    writer.Write(outer_key.Key + ": ");
+                    foreach (var inner_key in outer_key.Value.OrderByDescending(x => x.Value))
+                    {
+                        writer.Write(inner_key.Key + "[" + inner_key.Value + "], ");
+                    }
+                    writer.WriteLine();
+                }
+
+                writer.WriteLine();
+                writer.WriteLine("AFTER CONTACT LETTERS");
+                writer.WriteLine();
+
+                foreach (var outer_key in after)
+                {
+                    writer.Write(outer_key.Key + ": ");
+                    foreach (var inner_key in outer_key.Value.OrderByDescending(x => x.Value))
+                    {
+                        writer.Write(inner_key.Key + "[" + inner_key.Value + "], ");
+                    }
+                    writer.WriteLine();
+                }
+            }
+        }
+
 		public void PrintContactLetters()
 		{
-			Console.WriteLine ();
+            Console.WriteLine ();
 			Console.WriteLine ("BEFORE CONTACT LETTERS");
 			Console.WriteLine ();
 
 			foreach (var outer_key in before)
 			{
-				foreach(var inner_key in outer_key.Value)
+                Console.Write(outer_key.Key + ": ");
+				foreach(var inner_key in outer_key.Value.OrderBy(x => x.Value))
 				{
-					Console.WriteLine ("CURR LETTER: " + outer_key.Key + "\tPREV LETTER: " + inner_key.Key + "\tCOUNT: " + inner_key.Value); 
+					Console.Write(inner_key.Key + "[" + inner_key.Value + "], "); 
 				}
+                Console.WriteLine();
 			}
 
 			Console.WriteLine ();
 			Console.WriteLine ("AFTER CONTACT LETTERS");
 			Console.WriteLine ();
 
-			foreach (var outer_key in after)
-			{
-				foreach (var inner_key in outer_key.Value) 
-				{
-					Console.WriteLine ("CURR LETTER: " + outer_key.Key + "\tNEXT LETTER: " + inner_key.Key + "\tCOUNT: " + inner_key.Value);
-				}
-			}
-		}
+            foreach (var outer_key in after)
+            {
+                Console.Write(outer_key.Key + ": ");
+                foreach (var inner_key in outer_key.Value.OrderBy(x => x.Value))
+                {
+                    Console.Write(inner_key.Key + "[" + inner_key.Value + "], ");
+                }
+                Console.WriteLine();
+            }
+        }
     }
 }
