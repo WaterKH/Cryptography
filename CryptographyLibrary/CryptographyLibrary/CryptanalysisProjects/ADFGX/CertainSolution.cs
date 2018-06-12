@@ -21,7 +21,7 @@ namespace CryptographyLibrary
                     int cipherIndex = 0;
                     var incomplete = false;
 
-                    if (word.Length == i && !WaterkhUtilities.ContainsSpecialCharacters(word))
+                    if (word.Length == i && !Utilities.ContainsSpecialCharacters(word))
                     {
                         foreach(var c in word)
                         {
@@ -70,6 +70,15 @@ namespace CryptographyLibrary
 
             return poss;
         }
+
+		public string ciphertext = "IUNOLSOGTNZNSSMSSMNTMAOOWPPOWXNTLL";
+		
+		public void TestFunc()
+		{
+			string alphaPattern = Utilities.ConvertToAlphaPatterns(ciphertext);
+			Console.WriteLine(alphaPattern);
+		}
+
 	}
 }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CryptographyLibrary
+namespace CryptographyLibrary.CipherImplementations
 {
     class XOR
     {
@@ -26,6 +26,7 @@ namespace CryptographyLibrary
 
             for (int i = 0; i < text.Length; ++i)
             {
+                Console.Write((text[i] ^ key[i % key.Length]));
                 pt.Append((char)(text[i] ^ key[i % key.Length]));
             }
             

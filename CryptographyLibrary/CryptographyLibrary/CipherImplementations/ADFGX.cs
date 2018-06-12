@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
-namespace CryptographyLibrary
+namespace CryptographyLibrary.CipherImplementations
 {
 	public class ADFGX
 	{
@@ -19,7 +20,7 @@ namespace CryptographyLibrary
 		//	alphabet = anAlpha;
 		//	key = aKey;
 		//}
-
+        public ADFGX(){}
 		public ADFGX (string unformAlpha, string aKey)
 		{
 			alphabet = this.ConstructAlphabet(unformAlpha);
@@ -60,7 +61,7 @@ namespace CryptographyLibrary
 			string transposedText = "";
 			string sortedKey = "";
 			var listOfIndexesUsed = new List<int> ();
-			var listOfLengths = new List<int> ();
+			var indexPairedToLetter = new Dictionary<char, int> ();
 
 			var tempKey = key.ToList ();
 			tempKey.Sort ();
@@ -84,50 +85,61 @@ namespace CryptographyLibrary
 				for (int i = 0; i < sortedKey.Length; ++i) 
 				{
 					indexesToUse [i] = sortedKey.IndexOf (key [i]);
+					indexPairedToLetter.Add (key [i], indexesToUse [i]);
+					Console.WriteLine (indexesToUse [i]+ " " + key[i]);
 				}
 				break;
 			default:
 				break;
 			}
 
+			int nextIndex = 0;
+
 			for (int i = 0; i < sortedKey.Length; ++i) 
 			{
-				if (!listOfIndexesUsed.Contains (i)) 
+				if (!listOfIndexesUsed.Contains (i) && indexesToUse[i] == nextIndex) 
 				{
 					var indexOfKeyLetter = indexesToUse [i];
 
-					var temp = unformattedText [i];
-					unformattedText [i] = unformattedText [indexOfKeyLetter];
-					unformattedText [indexOfKeyLetter] = temp;
+					// ref used here so we do not return anything, but manipulate the matrix
+					SwapColumns (ref unformattedText, i, indexOfKeyLetter);
 
 					listOfIndexesUsed.Add (i);
-					listOfIndexesUsed.Add (indexOfKeyLetter);
+					++nextIndex;
+					i = nextIndex;
 				}
-
-				listOfLengths.Add (unformattedText [i].Length);
 			}
 
-			int max = 0;
+			Console.WriteLine ("Print Columns");
+			Utilities.PrintWithSpacesBtwnChars (sortedKey);
+			Console.WriteLine ("---------------------------------");
+			Utilities.PrintDoubleArray (unformattedText);
 
-			for (int i = 0; i < unformattedText.Length; ++i) 
+			for (int i = 0; i < unformattedText.Length; ++i)
 			{
-				if (unformattedText[i].Length > max)
+				for (int j = 0; j < unformattedText[i].Length; ++j)
 				{
-					max = unformattedText [i].Length;
+					transposedText += unformattedText [i] [j];
 				}
 			}
-			//TODO Horrible way; fix later
-			for (int i = 0; i < max; ++i)
-			{
-				for (int j = 0; j < unformattedText.Length; ++j)
-				{
-					if (i >= unformattedText[j].Length)
-						break;
-					transposedText += unformattedText [j] [i];
-				}
-			}
-
+			Console.WriteLine (transposedText);
 			return transposedText;
+		}
+
+		/// <summary>
+		/// Swaps the columns.
+		/// </summary>
+		/// <param name="matrix">ADFGX matrix.</param>
+		/// <param name="index1">Index of the first column</param>
+		/// <param name="index2">Index of the second column</param>
+		private void SwapColumns(ref string[][] matrix, int index1, int index2)
+		{
+			for (int i = 0; i < matrix.Length; ++i)
+			{
+				var temp = matrix [i][index1];
+				matrix [i][index1] = matrix [i][index2];
+				matrix [i][index2] = temp;
+			}
 		}
 
 		/// <summary>
@@ -141,34 +153,40 @@ namespace CryptographyLibrary
 			int rem = text.Length % key.Length;
 
 			//Console.WriteLine (numberOfRows);
-			string [] [] unformattedText = new string [key.Length] [];
+			if (rem > 0) 
+			{
+				numberOfRows += 1;
+			}
+
+			string [] [] unformattedText = new string [numberOfRows] [];
 
 			for (int i = 0; i < unformattedText.GetLength (0); ++i) 
 			{
-				if (i >= rem) 
-				{
-					unformattedText [i] = new string [numberOfRows];
-				} 
-				else
-				{
-					unformattedText [i] = new string [numberOfRows + 1];
-				}
+				unformattedText [i] = new string [key.Length];
 			}
 			int j = 0;
 
 			//TODO FIX THIS
 
-			for (int i = 0; i < text.Length; ++i) 
-			{
-				if (i % key.Length == 0 && i != 0) 
-				{
+			for (int i = 0; i < text.Length; ++i) {
+				if (i % numberOfRows == 0 && i != 0) {
 					++j;
 				}
-				unformattedText [i % key.Length][j] = text.Substring (i, 1);
+
+				if (j >= rem)
+				{
+					unformattedText [i % (numberOfRows - 1)] [j] = text.Substring (i, 1);
+				} 
+				else 
+				{
+					unformattedText [i % numberOfRows] [j] = text.Substring (i, 1);
+				}
 			}
 
-			Console.WriteLine ("Test");
-			WaterkhUtilities.PrintDoubleArray (unformattedText);
+			Console.WriteLine ("Print Columns");
+			Utilities.PrintWithSpacesBtwnChars (key);
+			Console.WriteLine ("---------------------------------");
+			Utilities.PrintDoubleArray (unformattedText);
 
 			return unformattedText;
 		}
@@ -192,8 +210,8 @@ namespace CryptographyLibrary
 				}
 				break;
 			case "Decrypt":
-				for (int i = 0; i < text.Length; i += 2) // NOTE!! += 2 instead of ++
-				{
+				for (int i = 0; i < text.Length; i += 2) // NOTE!! += 2 instead of +
+                {
 					var letterPair = text.Substring(i, 2);
 
 					substitutedText += ADFGXToLetter (letterPair);

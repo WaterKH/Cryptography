@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CryptographyLibrary
+namespace CryptographyLibrary.CipherImplementations
 {
 	public class RailFence
 	{

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CryptographyLibrary
+namespace CryptographyLibrary.CipherImplementations
 {
     class DES
     {
@@ -181,6 +181,63 @@ namespace CryptographyLibrary
         public DES()
         {
             // Not used
+        }
+
+        public void TestImplementation(string message, string key)
+        {
+			//string encryptMes = "kCmIgFi6GUJNgkNI1Q41fbfyLoCFTCvIqkZiI0KIAXAzP1U1uy1BE4UfPBfpKmmL0bjYnQNRBaPtKiVWzc5A4v0w3xIe8F0hAGJZ7g4in0wndJxM0v03dc1M82at2T6935roTqyWDgtGD/hwwRF3oHqFM5Vcw1JtINbsgWRm4o4/quEDkZ7x1B275bX3/Fo1";
+			//string key = "TheGiant";
+			DES des = new DES();
+
+			/*
+             * Message Conversion
+             */
+			byte[] convert_message = Convert.FromBase64String(message);
+			string binMes_prePad = "";
+
+			// USE 6 from b64 and 8 from ascii
+			foreach (var b in convert_message)
+			{
+				binMes_prePad += Convert.ToString(b, 2).PadLeft(6, '0');
+			}
+
+			int pad = binMes_prePad.Length + (64 - (binMes_prePad.Length % 64));
+			string binMes = binMes_prePad.PadRight(pad, '0');
+
+			/*
+             * Key Conversion
+             */
+			string convert_key = "";
+
+			foreach (char ch in key)
+			{
+				convert_key += Convert.ToString((int)ch, 2).PadLeft(8, '0');
+			}
+
+
+			/*
+             * DES Encryption
+             *
+            var encryptedMessage = "";
+
+            for (int i = 0; i < binMes.Length; i += 64)
+            {
+                var temp = binMes.Substring(i, 64);
+                encryptedMessage += des.Encrypt(temp, convert_key);
+            }*/
+
+			/*
+             * DES Decryption
+             */
+			var decryptedMessage = "";
+
+			for (int i = 0; i < binMes.Length; i += 64)
+			{
+				var temp = binMes.Substring(i, 64);
+				decryptedMessage += des.Decrypt(temp, convert_key);
+			}
+
+			Console.WriteLine(decryptedMessage);
         }
 
         /// <summary>

@@ -30,7 +30,7 @@ namespace CryptographyLibrary
 			int totalIters = 40;
 			List<string> output = new List<string> ();
 			string ctToAdd = "";
-			ciphertext = WaterkhUtilities.RemoveSpecialCharacters (ciphertext);
+			ciphertext = Utilities.RemoveSpecialCharacters (ciphertext);
 
 			while (iteration <= totalIters) {
 				Console.WriteLine ("ITERATION: " + iteration + " OF " + totalIters + "; CIPHERTEXT: " + ciphertext);
@@ -66,7 +66,7 @@ namespace CryptographyLibrary
 
 						// TODO Assign a set of letters to each ciphertext letter to limit the search
 						string newCipherText = "";
-						string tempA = WaterkhUtilities.RemoveRepLetters (ciphertext);
+						string tempA = Utilities.RemoveRepLetters (ciphertext);
 
 						// Grab all of the letters of the alphabet we are using...
 						for (int i = 0; i < tempA.Length; ++i) {

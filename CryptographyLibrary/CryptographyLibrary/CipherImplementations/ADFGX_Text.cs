@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ADFGX
+namespace CryptographyLibrary.CipherImplementations
 {
     public class ADFGX_Test
     {

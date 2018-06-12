@@ -4,300 +4,68 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
-using ADFGX;
-using CryptographyLibrary.CipherIdeas.ADFGX;
+using CryptographyLibrary.CipherFunctions_Utilities;
 using CryptographyLibrary.CipherImplementations;
-using CryptographyLibrary.Utilities;
+using CryptographyLibrary.CryptanalysisProjects;
 
 namespace CryptographyLibrary
 {
 	class MainClass
 	{
-        public static string alphabet = "abcdefghijklmnopqrstuvwxyz";
-
         public static void Main (string[] args)
 		{
-            var cl = new ContactLetters("brown.txt");
-            cl.PrintToFile("brown_analysis.txt");
+            DictionaryAttack ds = new DictionaryAttack("dictionary_pruned.txt", 8);
+
+            var lines = File.ReadAllLines("space.txt");
+
+            foreach(var l in lines)
+            {
+                ds.BeginAnalysis(l);    
+            }
+
             Console.Read();
 
-            string adfgx_WSIPAC = "IUNOLSOGTNZNSSMSSMNTMAOOWPPOWXNTLL";
-            BruteForceAttempt bfa = new BruteForceAttempt();
-            bfa.VowelMask_Attempt(adfgx_WSIPAC);
-
-                MiddleBruteForce mbf = new MiddleBruteForce();
-            string adfgx = "IXSODNOIINXXSNRSNRNSRASOWXPOKXNSQL".ToLower();
-            //mbf.AllPossibilities("All3Letters.txt");
-            mbf.FillInCiphertext("All3Letters.txt", adfgx);
+            SpacingPermutations sp = new SpacingPermutations(8, 1, 8);
+            sp.BeginPerms("IUNOLSOGTNZNSSMSSMNTMAOOWPPOWXNTLL");
+            //sp.TrimSentences("space.txt");
             Console.Read();
 
-            using (StreamReader reader = new StreamReader("sentence_tests.txt"))
+            ConsonantLine cl = new ConsonantLine();
+            var alphabet = "abcdefghijklmnopqrstuvwxyz ";
+
+            foreach (var c in alphabet)
             {
-                string test = "";
-                while ((test = reader.ReadLine()) != null)
+                cl.before_and_after_percs[c] = new Dictionary<Tuple<int, int>, int>();
+            }
+            cl.Analyze("IUNOLSOGTNZNSSMSSMNTMAOOWPPOWXNTLL");
+            Console.Read();
+            /*var path = "MobyDick_FORMAT.txt";
+            var lines = File.ReadAllText(path);
+            var format_lines = Utilities.RemoveSpecialCharacters(lines.Replace('\n', ' ')).ToLower();
+
+
+            var variableLength = 0;
+            for (int i = 0; i < format_lines.Length - variableLength; i += variableLength)
+            {
+                var temp = format_lines.Substring(i, 34);
+
+                var tempCounter = 0;
+                foreach(var c in temp)
                 {
-                    // TODO Test for frequencies
-                    var dict = LetterFrequency.ProduceFrequencies(test.Substring(0, 34));
-                    
-                    foreach(var kv in dict)
+                    if(c == ' ')
                     {
-                        Console.WriteLine(kv.Key + " " + kv.Value);
-                    }
-
-                    Console.Read();
-                }
-                Console.ReadLine();
-            }
-            string ct = "IXSODNOIINXXSNRSNRNSRASOWXPOKXNSQL";
-            string alphabet = "NSXOIRDAWPKQL";
-            string freqs    = "TEAIONSRHDLUC"; 
-            
-            // NSXOIRDAWPKQL=ETAIONSRHDLUC
-
-            MonoSubstitution ms = new MonoSubstitution();
-
-            var s = ms.Decrypt(ct, alphabet, freqs);
-            Console.WriteLine(s);
-            
-            /*string partialSolution = "";
-            using (StreamReader reader = new StreamReader("PartialSolutions.txt"))
-            {
-                int i = 0;
-                while ((partialSolution = reader.ReadLine()) != null)
-                {
-                    mbf.FillInCipherText(adfgx, partialSolution, "patterns.txt", "SoManyTextFiles/Line" + i + ".txt");
-                    ++i;
-                }
-                
-            }*/
-            DictionarySearch ds = new DictionarySearch();
-            //ds.Prune();
-            //ds.Search();
-            
-            //ds.FillInCipherText(adfgx, "Test.txt");
-            
-
-            string encryptMes = "kCmIgFi6GUJNgkNI1Q41fbfyLoCFTCvIqkZiI0KIAXAzP1U1uy1BE4UfPBfpKmmL0bjYnQNRBaPtKiVWzc5A4v0w3xIe8F0hAGJZ7g4in0wndJxM0v03dc1M82at2T6935roTqyWDgtGD/hwwRF3oHqFM5Vcw1JtINbsgWRm4o4/quEDkZ7x1B275bX3/Fo1";
-            string key = "TheGiant";
-            DES des = new DES();
-
-            /*
-             * Message Conversion
-             */
-            byte[] convert_message = Convert.FromBase64String(encryptMes);
-            string binMes_prePad = "";
-
-            // USE 6 from b64 and 8 from ascii
-            foreach(var b in convert_message)
-            {
-                binMes_prePad += Convert.ToString(b, 2).PadLeft(6, '0');
-            }
-
-            int pad = binMes_prePad.Length + (64 - (binMes_prePad.Length % 64));
-            string binMes = binMes_prePad.PadRight(pad, '0');
-
-            /*
-             * Key Conversion
-             */
-            string convert_key = "";
-
-            foreach (char ch in key)
-            {
-                convert_key += Convert.ToString((int)ch, 2).PadLeft(8, '0');
-            }
-            
-
-            /*
-             * DES Encryption
-             *
-            var encryptedMessage = "";
-
-            for (int i = 0; i < binMes.Length; i += 64)
-            {
-                var temp = binMes.Substring(i, 64);
-                encryptedMessage += des.Encrypt(temp, convert_key);
-            }*/
-            
-            /*
-             * DES Decryption
-             */
-            var decryptedMessage = "";
-
-            for(int i = 0; i < binMes.Length; i += 64)
-            {
-                var temp = binMes.Substring(i, 64);
-                decryptedMessage += des.Decrypt(temp, convert_key);
-            }
-
-            Console.WriteLine(decryptedMessage);
-
-            /*var key = new List<int> { 1, 2, 3, 4, 5 };
-            var ct = "XDGDGDFDXFXDXAAAGGAFXXFDXFGXGDFDGFFAFGXFXXAGDAGXAFDAFDGDGDGAGGDADAFAFADAFFGAGDADXAGADAXAGXDDGAGAGAFFAGDXAGAGGDFDGGDDGAAFXGXDFAFDGDAXAADAFFAXGD";
-
-            var l = Utilities.GetPermutations(key);
-
-            foreach(var k in l)
-            {
-                var t = "";
-
-                k.ForEach(x => t += x);
-                var adfgx = new ADFGX_Test(t);
-                Console.WriteLine(adfgx.DecryptMessage(ct));
-
-                Console.WriteLine();
-            }*/
-            Console.WriteLine("Finished");
-            Console.ReadLine();
-        }
-
-        public static void WriteToFileCribs(string ciphertext)
-        {
-            List<string> dictionary = File.ReadLines("dictionary.txt").ToList<string>();
-            var newDict = new List<string>();
-
-            // Shorten dictionary to two letter ending words
-            foreach(var word in dictionary)
-            {
-                if (word.Length > 2 && word.Length < 9)
-                {
-                    if (word[word.Length - 1] == word[word.Length - 2])
-                    {
-                        newDict.Add(word);
+                        tempCounter++;
                     }
                 }
+                variableLength = 34 + tempCounter;
+                temp = format_lines.Substring(i, variableLength);
+
+                //Console.WriteLine(temp);
+                cl.Analyze(temp);
             }
 
-            File.WriteAllLines("two_letter_endings.txt", newDict);
-
-            // Grab all cribs
-            //CertainSolution cs = new CertainSolution();
-            //var ctList = cs.TestFunction(ciphertext, dictionary);
-
-            //File.WriteAllLines("crib_results.txt", ctList);
-
-            //List<string> ctList = File.ReadLines("crib_results.txt").ToList<string>();
-            //List<string> dictionary = File.ReadLines("dictionary.txt").ToList<string>();
-
-            //Console.WriteLine(list.Count);
-            //string alphabet = "abcdefghiklmnopqrstuvwxyz";
-            //foreach(var c in alphabet)
-            //{
-            //    var tempL = new List<string>();
-
-            //                foreach(var item in list)
-            //                {
-            //                    if(item[0] == c)
-            //                    {
-            //                        tempL.Add(item);
-            //                    }
-            //                }
-
-            //    File.WriteAllLines("crib_results_for_" + c + ".txt", tempL);
-            //    Console.WriteLine(c + " " + tempL.Count); 
-            //}
-
-            // Grab particular cribs
-            var condensedList = new List<string>();
-            for (int i = 0; i < newDict.Count; ++i)
-            {
-                var word = newDict[i];
-
-                if (WaterkhUtilities.ContainsSpecialCharacters(word)) continue;
-                
-                var index = ciphertext.Length - word.Length;
-                var tempDict = new Dictionary<char, char>();
-                var tempCipherDict = new Dictionary<char, char>();
-                var counter = 0;
-                var incomplete = false;
-
-                for(int k = index; k < ciphertext.Length; ++k)
-                {
-                    if (!tempCipherDict.ContainsKey(ciphertext[k]))
-                    {
-                        tempCipherDict.Add(ciphertext[k], word[counter]);
-                    }
-
-                    if (!tempDict.ContainsKey(word[counter]))
-                    {
-                        tempDict.Add(word[counter], ciphertext[k]);
-                    }
-                    else
-                    {
-                        if (tempDict[word[counter]] != ciphertext[k])
-                        {
-                            incomplete = true;
-                            break;
-                        }
-                    }
-                       
-                    ++counter;
-                }
-
-                if(incomplete) continue;
-
-                var pt = "";
-                foreach (var c in ciphertext)
-                {
-                    if (tempCipherDict.ContainsKey(c))
-                    {
-                        pt += tempCipherDict[c].ToString().ToUpper();
-                    }
-                    else
-                    {
-                        pt += "_";//c.ToString().ToLower();
-                    }
-                }
-                condensedList.Add(pt);
-                
-            }
-            File.WriteAllLines("condensed_crib_results_Liz.txt", condensedList);
-        }
-
-        public static void WriteToFileAlphabets(string ciphertext)
-        {
-            List<string> list = File.ReadAllLines("use_for_alpha.txt").ToList<string>();
-            var condensedList = new List<string>();
-            foreach (var ct in list)
-            {
-                StringBuilder newCT = new StringBuilder(ct);
-                for (int i = 0; i < newCT.Length; ++i)
-                {
-                    if (char.IsLower(newCT[i]))
-                    {
-                        newCT[i] = '_';
-                    }
-                }
-                condensedList.Add(newCT.ToString());
-            }
-
-            var listPrint = new List<string>();
-            condensedList.ForEach(x => listPrint.Add(printCipherAlphaWithAlpha(ciphertext, x)));
-
-            File.WriteAllLines("alphabets.txt", listPrint);
-        }
-        
-        public static string printCipherAlphaWithAlpha(string ciphertext, string partialPlain)
-        {
-
-            StringBuilder cipheralphabet = new StringBuilder("--------------------------");
-            string print = "\r\n===========================================\r\n";
-
-            print += alphabet + "\r\n";
-
-            for (int i = 0; i < partialPlain.Length; ++i)
-            {
-                if (char.IsUpper(partialPlain[i]))
-                {
-                    cipheralphabet[alphabet.IndexOf(partialPlain[i].ToString().ToLower())] = ciphertext[i];
-                }
-            }
-            Console.WriteLine();
-            print += cipheralphabet + "\r\n";
-            print += ciphertext.ToLower() + "\r\n" + partialPlain;
-            print += "\r\n===========================================";
-
-            return print;
+            cl.PrintData();
+            Console.Read();*/
         }
     }
-
 }
